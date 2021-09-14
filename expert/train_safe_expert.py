@@ -1,9 +1,9 @@
-from drivingforce.expert_in_the_loop.common import SaverCallbacks
-from drivingforce.expert_in_the_loop.expert_guided_env import ExpertGuidedEnv
-from drivingforce.safety.ppo_lag import PPOLag
+from egpo_utils.common import SaverCallbacks
+from egpo_utils.expert_guided_env import ExpertGuidedEnv
+from egpo_utils.safety.ppo_lag import PPOLag
 from ray.rllib.agents.ppo.ppo import PPOTrainer
-from drivingforce.train import train, get_train_parser
-from drivingforce.expert_in_the_loop.common import evaluation_config
+from egpo_utils.train import train, get_train_parser
+from egpo_utils.common import evaluation_config
 from ray import tune
 
 if __name__ == '__main__':

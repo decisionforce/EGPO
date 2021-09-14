@@ -11,18 +11,18 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from drivingforce.expert_in_the_loop.common import evaluation_config
-from drivingforce.expert_in_the_loop.expert_guided_env import ExpertGuidedEnv
+from egpo_utils.common import evaluation_config
+from egpo_utils.expert_guided_env import ExpertGuidedEnv
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from easydict import EasyDict
-from drivingforce.expert_in_the_loop.gail.exp_saver import Experiment
+from egpo_utils.gail.exp_saver import Experiment
 
-from drivingforce.expert_in_the_loop.gail.mlp import Policy, Value
+from egpo_utils.gail.mlp import Policy, Value
 from stable_baselines3.common.vec_env import SubprocVecEnv
 from stable_baselines3.common.utils import set_random_seed
-from pgdrive.utils import get_np_random
+from metadrive.utils import get_np_random
 
 import os
 

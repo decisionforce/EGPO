@@ -1,7 +1,7 @@
-from drivingforce.expert_in_the_loop.common import SaverCallbacks
-from drivingforce.expert_in_the_loop.egpo.sac_pid_saver import SACPIDSaverTrainer
-from drivingforce.expert_in_the_loop.human_in_the_loop_env import HumanInTheLoopEnv
-from drivingforce.train import train, get_train_parser
+from egpo_utils.common import SaverCallbacks
+from egpo_utils.egpo.sac_pid_saver import SACPIDSaverTrainer
+from egpo_utils.human_in_the_loop_env import HumanInTheLoopEnv
+from egpo_utils.train import train, get_train_parser
 import datetime
 
 def get_time_str():

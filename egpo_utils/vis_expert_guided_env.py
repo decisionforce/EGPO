@@ -1,8 +1,8 @@
-from drivingforce.expert_in_the_loop.expert_guided_env import ExpertGuidedEnv
-from pgdrive.world.onscreen_message import PGOnScreenMessage
+from egpo_utils.expert_guided_env import ExpertGuidedEnv
+from metadrive.engine.core.onscreen_message import ScreenMessage
 
 if __name__ == "__main__":
-    PGOnScreenMessage.SCALE = 0.1
+    ScreenMessage.SCALE = 0.1
     env = ExpertGuidedEnv(dict(
         vehicle_config=dict(
             use_saver=False,

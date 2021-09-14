@@ -2,18 +2,18 @@ import copy
 
 import ray
 from ray import tune
-from drivingforce.offline_rl.cql.cql import CQLTrainer
-from drivingforce.expert_in_the_loop.common import evaluation_config, ILCallBack
-from drivingforce.expert_in_the_loop.cql.input_reader import SafePGDriveInputReader
-from drivingforce.expert_in_the_loop.expert_guided_env import ExpertGuidedEnv
-from drivingforce.train import get_train_parser
-from drivingforce.train.train import train
+from egpo_utils.offline_rl.cql.cql import CQLTrainer
+from egpo_utils.common import evaluation_config, ILCallBack
+from egpo_utils.input_reader import InputReader
+from egpo_utils.expert_guided_env import ExpertGuidedEnv
+from egpo_utils.train import get_train_parser
+from egpo_utils.train.train import train
 
 data_set_file_path = "/home/liquanyi/drivingforce/drivingforce/saver/expert_traj_500.json"
 
 
 def get_data_sampler_func(ioctx):
-    return SafePGDriveInputReader(data_set_file_path)
+    return InputReader(data_set_file_path)
 
 
 eval_config = copy.deepcopy(evaluation_config)

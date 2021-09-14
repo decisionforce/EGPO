@@ -1,7 +1,7 @@
-from drivingforce.expert_in_the_loop.egpo.sac_pid_saver import SACPIDSaverTrainer
-from drivingforce.expert_in_the_loop.human_in_the_loop_env import HumanInTheLoopEnv
+from egpo_utils.egpo.sac_pid_saver import SACPIDSaverTrainer
+from egpo_utils.human_in_the_loop_env import HumanInTheLoopEnv
 
-from drivingforce.train.utils import initialize_ray
+from egpo_utils.train.utils import initialize_ray
 
 initialize_ray(test_mode=False)
 

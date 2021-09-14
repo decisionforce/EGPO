@@ -1,20 +1,19 @@
 import os.path as osp
 import time
-from pgdrive.utils.random import get_np_random
+from metadrive.utils.random_utils import get_np_random
 from panda3d.core import PNMImage
 import gym
 import numpy as np
-from pgdrive.scene_creator.highway_vehicle.behavior import IDMVehicle
-from pgdrive.utils.pg_config import PGConfig
+from metadrive.utils.config import Config
 
-from drivingforce.process.vis_model_utils import expert_action_prob
-from drivingforce.safe_generalization.run import load_weights
-from pgdrive.envs.generation_envs.safe_pgdrive_env import SafePGDriveEnv
+from egpo_utils.process.vis_model_utils import expert_action_prob
+from egpo_utils.safe_generalization.run import load_weights
+from metadrive.envs.safe_metadrive_env import SafeMetaDriveEnv
 
 
-class ExpertGuidedEnv(SafePGDriveEnv):
+class ExpertGuidedEnv(SafeMetaDriveEnv):
 
-    def default_config(self) -> PGConfig:
+    def default_config(self) -> Config:
         """
         Train/Test set both contain 10 maps
         :return: PGConfig
@@ -87,7 +86,6 @@ class ExpertGuidedEnv(SafePGDriveEnv):
         step_info["native_cost"] = step_info["cost"]
         # if step_info["out_of_road"] and not step_info["arrive_dest"]:
         # out of road will be done now
-        step_info["high_speed"] = True if self.vehicle.speed >= IDMVehicle.MAX_SPEED else False
         step_info["takeover_cost"] = self.config["takeover_cost"] if step_info["takeover_start"] else 0
         self.total_takeover_cost += step_info["takeover_cost"]
         self.total_native_cost += step_info["native_cost"]
@@ -115,7 +113,7 @@ class ExpertGuidedEnv(SafePGDriveEnv):
         super(ExpertGuidedEnv, self)._reset_agents()
 
     def done_function(self, v_id):
-        """This function is a little bit different compared to the SafePGDriveEnv in PGDrive!"""
+        """This function is a little bit different compared to the Env in PGDrive!"""
         done, done_info = super(ExpertGuidedEnv, self).done_function(v_id)
         if self.config["safe_rl_env_v2"]:
             assert self.config["out_of_road_cost"] > 0

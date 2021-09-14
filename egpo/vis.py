@@ -1,9 +1,9 @@
-from drivingforce.process.restore import restore
+from egpo_utils.process.restore import restore
 import copy
-from drivingforce.train.utils import initialize_ray
-from drivingforce.generalization.rgb.network import register_our_network
-from drivingforce.expert_in_the_loop.egpo.sac_pid_saver import SACPIDSaverTrainer
-from pgdrive.world.onscreen_message import PGOnScreenMessage
+from egpo_utils.train.utils import initialize_ray
+from egpo_utils.generalization.rgb.network import register_our_network
+from egpo_utils.egpo.sac_pid_saver import SACPIDSaverTrainer
+from metadrive.world.onscreen_message import PGOnScreenMessage
 
 if __name__ == "__main__":
     PGOnScreenMessage.SCALE = 0.1
@@ -15,8 +15,8 @@ if __name__ == "__main__":
     trainer = restore(ckpt, SACPIDSaverTrainer, dict(evaluation_num_workers=0, evaluation_interval=0, num_gpus=0), True)
 
     import time
-    from drivingforce.expert_in_the_loop.expert_guided_env import ExpertGuidedEnv
-    from drivingforce.expert_in_the_loop.common import evaluation_config
+    from egpo_utils.expert_guided_env import ExpertGuidedEnv
+    from egpo_utils.common import evaluation_config
 
     eval_config = copy.deepcopy(evaluation_config)
     eval_config["env_config"]["use_render"] = True

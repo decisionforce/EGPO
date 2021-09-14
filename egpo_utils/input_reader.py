@@ -4,10 +4,10 @@ import json
 import numpy as np
 
 
-class SafePGDriveInputReader(InputReader):
+class InputReader(InputReader):
 
     def __init__(self, data_set_path=None):
-        super(SafePGDriveInputReader, self).__init__()
+        super(InputReader, self).__init__()
         assert data_set_path is not None
         with open(data_set_path, "r") as f:
             self.data = json.load(f)

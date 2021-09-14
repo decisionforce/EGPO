@@ -1,7 +1,7 @@
 from typing import Dict
 
 import numpy as np
-from drivingforce.train.callbacks import DrivingCallbacks
+from egpo_utils.train.callbacks import DrivingCallbacks
 from ray.rllib.env import BaseEnv
 from ray.rllib.evaluation import MultiAgentEpisode, RolloutWorker
 from ray.rllib.policy import Policy

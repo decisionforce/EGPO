@@ -1,17 +1,17 @@
 from __future__ import print_function
 import time
-from drivingforce.expert_in_the_loop.dagger.exp_saver import Experiment
+from egpo_utils.dagger.exp_saver import Experiment
 
 import os.path as osp
 
-from drivingforce.process.vis_model_utils import expert_action_prob
-from drivingforce.safe_generalization.run import load_weights
-from drivingforce.expert_in_the_loop.expert_guided_env import ExpertGuidedEnv
-from utils import *
+from egpo_utils.process.vis_model_utils import expert_action_prob
+from egpo_utils.safe_generalization.run import load_weights
+from egpo_utils.expert_guided_env import ExpertGuidedEnv
+from egpo_utils import *
 from stable_baselines3.common.vec_env.subproc_vec_env import SubprocVecEnv
 from model import Model
 import os
-from drivingforce.expert_in_the_loop.common import evaluation_config
+from egpo_utils.common import evaluation_config
 
 # require loguru imageio easydict tensorboardX pyyaml pytorch==1.5.0 stable_baselines3, cudatoolkit==9.2
 

@@ -3,18 +3,18 @@ import copy
 import ray
 from ray import tune
 
-from drivingforce.expert_in_the_loop.common import ILCallBack
-from drivingforce.expert_in_the_loop.cql.input_reader import SafePGDriveInputReader
-from drivingforce.expert_in_the_loop.human_in_the_loop_env import HumanInTheLoopEnv
-from drivingforce.offline_rl.cql.cql import CQLTrainer
-from drivingforce.train import get_train_parser
-from drivingforce.train.train import train
+from egpo_utils.common import ILCallBack
+from egpo_utils.cql.input_reader import InputReader
+from egpo_utils.human_in_the_loop_env import HumanInTheLoopEnv
+from egpo_utils.offline_rl.cql.cql import CQLTrainer
+from egpo_utils.train import get_train_parser
+from egpo_utils.train.train import train
 
 data_set_file_path = "/home/liquanyi/drivingforce/drivingforce/expert_in_the_loop/human_in_the_loop/human_traj_50.json"
 
 
 def get_data_sampler_func(ioctx):
-    return SafePGDriveInputReader(data_set_file_path)
+    return InputReader(data_set_file_path)
 
 
 eval_config = dict()

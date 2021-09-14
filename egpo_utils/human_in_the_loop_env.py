@@ -1,9 +1,9 @@
-from pgdrive.envs.safe_pgdrive_env import SafePGDriveEnv
-from pgdrive.engine.core.onscreen_message import ScreenMessage
+from metadrive.envs.safe_metadrive_env import SafeMetaDriveEnv
+from metadrive.engine.core.onscreen_message import ScreenMessage
 
 ScreenMessage.SCALE = 0.1
 
-class HumanInTheLoopEnv(SafePGDriveEnv):
+class HumanInTheLoopEnv(SafeMetaDriveEnv):
     """
     This Env depends on the new version of MetaDrive
     """

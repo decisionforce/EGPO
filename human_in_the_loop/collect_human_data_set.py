@@ -3,8 +3,8 @@ import json
 import numpy as np
 from ray.rllib.policy.sample_batch import SampleBatch
 
-from drivingforce.expert_in_the_loop.human_in_the_loop_env import HumanInTheLoopEnv
-from drivingforce.process.vis_model_utils import expert_action_prob
+from egpo_utils.human_in_the_loop_env import HumanInTheLoopEnv
+from egpo_utils.process.vis_model_utils import expert_action_prob
 
 
 def process_info(info):

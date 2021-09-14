@@ -2,8 +2,8 @@ import json
 import numpy as np
 from ray.rllib.policy.sample_batch import SampleBatch
 
-from drivingforce.expert_in_the_loop.expert_guided_env import ExpertGuidedEnv
-from drivingforce.process.vis_model_utils import expert_action_prob
+from egpo_utils.expert_guided_env import ExpertGuidedEnv
+from egpo_utils.process.vis_model_utils import expert_action_prob
 
 
 def expert(env, obs):
