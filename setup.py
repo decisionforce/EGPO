@@ -14,7 +14,14 @@ setup(
         "torch",
         "tensorflow-probability==0.11.1",
         "tensorboardX",
-        "metadrive-simulator==0.2.3"
+        "metadrive-simulator==0.2.3",
+        "loguru",
+        "imageio",
+        "easydict",
+        "tensorboardX",
+        "pyyaml pytorch==1.5.0",
+        "stable_baselines3",
+        "cudatoolkit==9.2"
     ],
     # license="Apache 2.0",
 )

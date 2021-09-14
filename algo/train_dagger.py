@@ -9,7 +9,7 @@ from egpo_utils.safe_generalization.run import load_weights
 from egpo_utils.expert_guided_env import ExpertGuidedEnv
 from egpo_utils import *
 from stable_baselines3.common.vec_env.subproc_vec_env import SubprocVecEnv
-from model import Model
+from egpo_utils.dagger.model import Model
 import os
 from egpo_utils.common import evaluation_config
 
