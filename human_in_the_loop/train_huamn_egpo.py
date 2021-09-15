@@ -18,7 +18,7 @@ if __name__ == '__main__':
     config = dict(
         env=HumanInTheLoopEnv,
         env_config={
-            "manual_control": True,
+            "manual_control": False,
             "use_render": True,
             "window_size":(1600, 1100)
         },
@@ -38,7 +38,7 @@ if __name__ == '__main__':
         # k_i=tune.grid_search([0.01, 0.005, 0.001]),
 
         # expected max takeover num
-        cost_limit=300,
+        cost_limit=200,
         optimization=dict(actor_learning_rate=1e-4, critic_learning_rate=1e-4, entropy_learning_rate=1e-4),
         prioritized_replay=False,
         horizon=400,
