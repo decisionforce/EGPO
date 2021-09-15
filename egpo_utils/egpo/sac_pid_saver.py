@@ -21,8 +21,8 @@ from ray.rllib.utils.typing import TrainerConfigDict
 from ray.tune.utils.util import merge_dicts
 from ray.util.iter import LocalIterator
 
-from egpo_utils.safety.sac_pid.sac_pid import SACPIDTrainer, validate_config
-from egpo_utils.safety.sac_pid.sac_pid_policy import SACPIDConfig, SACPIDPolicy, UpdatePenalty, get_dist_class
+from egpo_utils.sac_pid.sac_pid import SACPIDTrainer, validate_config
+from egpo_utils.sac_pid.sac_pid_policy import SACPIDConfig, SACPIDPolicy, UpdatePenalty, get_dist_class
 
 # Update penalty
 #
