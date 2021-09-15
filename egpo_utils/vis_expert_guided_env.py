@@ -5,7 +5,7 @@ if __name__ == "__main__":
     ScreenMessage.SCALE = 0.1
     env = ExpertGuidedEnv(dict(
         vehicle_config=dict(
-            use_saver=False,
+            use_saver=True,
             free_level=0.95,
             overtake_stat=True,
             expert_deterministic=False,
@@ -22,7 +22,6 @@ if __name__ == "__main__":
             "config": 5,
         },
         # camera_dist=10,
-        pg_world_config={"show_fps":False},
         cost_to_reward=True,
         # crash_vehicle_penalty=1.,
         # crash_object_penalty=0.5,
@@ -36,8 +35,8 @@ if __name__ == "__main__":
         environment_num=1,
 
         use_render=True,
-        debug=True,
-        manual_control=True))
+        # debug=True,
+        manual_control=False))
 
     def _save(env):
         env.vehicle.vehicle_config["use_saver"]= not env.vehicle.vehicle_config["use_saver"]
@@ -47,8 +46,8 @@ if __name__ == "__main__":
     o = env.reset()
     # env.vehicle.remove_display_region()
     env.main_camera.set_follow_lane(True)
-    env.pg_world.accept("p",env.capture)
-    env.pg_world.accept("u", _save, extraArgs=[env])
+    env.engine.accept("p",env.capture)
+    env.engine.accept("u", _save, extraArgs=[env])
     max_s = 0
     max_t = 0
     start = 0

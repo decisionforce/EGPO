@@ -1,4 +1,5 @@
 from typing import Dict
+import math
 
 import numpy as np
 
@@ -211,3 +212,40 @@ class ILCallBack(SaverCallbacks):
                 result["episode_reward_mean"] = eval["episode_reward_mean"]
                 result["reward"] = eval["episode_reward_mean"]
                 result["length"] = eval["episode_len_mean"]
+
+
+def normpdf(x, mean, sd):
+    var = float(sd) ** 2
+    denom = (2 * math.pi * var) ** .5
+    num = math.exp(-(float(x) - float(mean)) ** 2 / (2 * var))
+    return num / denom
+
+
+def expert_action_prob(action, obs, weights, deterministic=False):
+    obs = obs.reshape(1, -1)
+    x = np.matmul(obs, weights["default_policy/fc_1/kernel"]) + weights["default_policy/fc_1/bias"]
+    x = np.tanh(x)
+    x = np.matmul(x, weights["default_policy/fc_2/kernel"]) + weights["default_policy/fc_2/bias"]
+    x = np.tanh(x)
+    x = np.matmul(x, weights["default_policy/fc_out/kernel"]) + weights["default_policy/fc_out/bias"]
+    x = x.reshape(-1)
+    mean, log_std = np.split(x, 2)
+    std = np.exp(log_std)
+    a_0_p = normpdf(action[0], mean[0], std[0])
+    a_1_p = normpdf(action[1], mean[1], std[1])
+    expert_action = np.random.normal(mean, std) if not deterministic else mean
+    return expert_action, a_0_p, a_1_p
+
+
+def load_weights(path: str):
+    """
+    Load NN weights
+    :param path: weights file path path
+    :return: NN weights object
+    """
+    # try:
+    model = np.load(path)
+    return model
+    # except FileNotFoundError:
+    # print("Can not find {}, didn't load anything".format(path))
+    # return None

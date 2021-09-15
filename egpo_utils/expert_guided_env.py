@@ -1,14 +1,11 @@
 import os.path as osp
-import time
-from metadrive.utils.random_utils import get_np_random
-from panda3d.core import PNMImage
+
 import gym
 import numpy as np
+from metadrive.envs.safe_metadrive_env import SafeMetaDriveEnv
 from metadrive.utils.config import Config
 
-from egpo_utils.process.vis_model_utils import expert_action_prob
-from egpo_utils.safe_generalization.run import load_weights
-from metadrive.envs.safe_metadrive_env import SafeMetaDriveEnv
+from egpo_utils.common import load_weights, expert_action_prob
 
 
 class ExpertGuidedEnv(SafeMetaDriveEnv):
@@ -28,7 +25,6 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
             # traffic setting
             random_traffic=False,
             traffic_density=0.2,
-            traffic_mode="trigger",
 
             # special setting
             rule_takeover=False,
@@ -45,7 +41,7 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
                 overtake_stat=False),  # set to True only when evaluate
 
             expert_value_weights=osp.join(osp.dirname(__file__), "5_14_safe_expert.npz")
-        ), allow_overwrite=True)
+        ), allow_add_new_key=True)
         return config
 
     def __init__(self, config):
@@ -76,8 +72,10 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
         return super(ExpertGuidedEnv, self)._get_reset_return()
 
     def step(self, actions):
+        actions, saver_info =self.saver("default_agent", actions)
         obs, r, d, info, = super(ExpertGuidedEnv, self).step(actions)
-        info = self.extra_step_info(info)
+        saver_info.update(info)
+        info = self.extra_step_info(saver_info)
         return obs, r, d, info
 
     def extra_step_info(self, step_info):
@@ -86,6 +84,7 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
         step_info["native_cost"] = step_info["cost"]
         # if step_info["out_of_road"] and not step_info["arrive_dest"]:
         # out of road will be done now
+        step_info["high_speed"] = True if self.vehicle.speed >= 50 else False
         step_info["takeover_cost"] = self.config["takeover_cost"] if step_info["takeover_start"] else 0
         self.total_takeover_cost += step_info["takeover_cost"]
         self.total_native_cost += step_info["native_cost"]
@@ -102,18 +101,8 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
             raise ValueError
         return step_info
 
-    def _reset_agents(self):
-        if self.config["random_spawn"]:
-            spawn_lane_index = (*self.vehicle.vehicle_config["spawn_lane_index"][:-1],
-                                get_np_random().randint(0, self.current_map.config["lane_num"]))
-            self.vehicle.vehicle_config["spawn_lane_index"] = spawn_lane_index
-            self.vehicle.vehicle_config["spawn_lateral"] = (get_np_random().rand() - 0.5) * self.current_map.config[
-                "lane_width"] / 2
-
-        super(ExpertGuidedEnv, self)._reset_agents()
-
     def done_function(self, v_id):
-        """This function is a little bit different compared to the Env in PGDrive!"""
+        """This function is a little bit different compared to the SafePGDriveEnv in PGDrive!"""
         done, done_info = super(ExpertGuidedEnv, self).done_function(v_id)
         if self.config["safe_rl_env_v2"]:
             assert self.config["out_of_road_cost"] > 0
@@ -128,18 +117,18 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
         if self.config["rule_takeover"]:
             return self.rule_takeover(v_id, actions)
         vehicle = self.vehicles[v_id]
-        action = actions[v_id]
+        action = actions
         steering = action[0]
         throttle = action[1]
         self.state_value = 0
         pre_save = vehicle.takeover
-        if vehicle.vehicle_config["use_saver"] or vehicle._expert_takeover:
+        if vehicle.config["use_saver"] or vehicle.expert_takeover:
             # saver can be used for human or another AI
-            free_level = vehicle.vehicle_config["free_level"] if not vehicle._expert_takeover else 1.0
-            obs = self.observations[v_id].observe(vehicle)
+            free_level = vehicle.config["free_level"] if not vehicle.expert_takeover else 1.0
+            obs = self.observations[v_id].current_observation
             try:
                 saver_a, a_0_p, a_1_p = expert_action_prob(action, obs, self.expert_weights,
-                                                           deterministic=vehicle.vehicle_config["expert_deterministic"])
+                                                           deterministic=vehicle.config["expert_deterministic"])
             except ValueError:
                 print("Expert can not takeover, due to observation space mismathing!")
                 saver_a = action
@@ -148,7 +137,7 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
                     steering = saver_a[0]
                     throttle = saver_a[1]
                 elif free_level > 1e-3:
-                    if a_0_p * a_1_p < 1 - vehicle.vehicle_config["free_level"]:
+                    if a_0_p * a_1_p < 1 - vehicle.config["free_level"]:
                         steering, throttle = saver_a[0], saver_a[1]
 
         # indicate if current frame is takeover step
@@ -167,13 +156,13 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
         action = actions[v_id]
         steering = action[0]
         throttle = action[1]
-        if vehicle.vehicle_config["use_saver"] or vehicle._expert_takeover:
+        if vehicle.config["use_saver"] or vehicle.expert_takeover:
             # saver can be used for human or another AI
-            save_level = vehicle.vehicle_config["save_level"] if not vehicle._expert_takeover else 1.0
+            save_level = vehicle.config["save_level"] if not vehicle.expert_takeover else 1.0
             obs = self.observations[v_id].observe(vehicle)
             try:
                 saver_a, a_0_p, a_1_p = expert_action_prob(action, obs, self.expert_weights,
-                                                           deterministic=vehicle.vehicle_config["expert_deterministic"])
+                                                           deterministic=vehicle.config["expert_deterministic"])
             except ValueError:
                 print("Expert can not takeover, due to observation space mismathing!")
             else:
@@ -217,23 +206,13 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
         }
         return (steering, throttle) if saver_info["takeover"] else action, saver_info
 
-    def capture(self):
-
-        img = PNMImage()
-        self.pg_world.win.getScreenshot(img)
-        img.write("main_{}.jpg".format(time.thread_time()))
-
-    def reward_function(self, vehicle_id: str):
-        ret = super(ExpertGuidedEnv, self).reward_function(vehicle_id)
-        return ret
-
 
 class SmartExpertGuidedEnv(ExpertGuidedEnv):
 
     def saver(self, v_id: str, tuple_action):
         assert len(tuple_action[v_id]) == 3, "action space error"
         vehicle = self.vehicles[v_id]
-        vehicle.vehicle_config["free_level"] = tuple_action[v_id][-1]
+        vehicle.config["free_level"] = tuple_action[v_id][-1]
         return super(SmartExpertGuidedEnv, self).saver(v_id, tuple_action)
 
     @property
