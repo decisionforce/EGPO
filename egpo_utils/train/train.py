@@ -24,11 +24,6 @@ def train(
         save_pkl=True,
         custom_callback=None,
         max_failures=5,
-        # wandb support is removed!
-        wandb_key_file=None,
-        wandb_project=None,
-        wandb_team="copo",
-        wandb_log_config=True,
         init_kws=None,
         **kwargs
 ):
@@ -104,7 +99,7 @@ def train(
         config=config,
         max_failures=max_failures if not test_mode else 0,
         reuse_actors=False,
-        local_dir="",
+        local_dir="./",
         **kwargs
     )
 
