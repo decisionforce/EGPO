@@ -72,6 +72,6 @@ if __name__ == '__main__':
         # num_seeds=2,
         num_seeds=1,
         custom_callback=SaverCallbacks,
-        test_mode=True,
-        local_mode=True
+        # test_mode=True,
+        # local_mode=True
     )
