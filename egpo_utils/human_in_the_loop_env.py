@@ -1,4 +1,5 @@
 from metadrive.envs.safe_metadrive_env import SafeMetaDriveEnv
+from metadrive.policy.manual_control_policy import TakeoverPolicy
 from metadrive.engine.core.onscreen_message import ScreenMessage
 
 ScreenMessage.SCALE = 0.1
@@ -17,7 +18,8 @@ class HumanInTheLoopEnv(SafeMetaDriveEnv):
                 "map": "Cr",
                 "cost_to_reward": True,
                 "manual_control": True,
-                "controller": "joystick"
+                "controller": "joystick",
+                "agent_policy": TakeoverPolicy
             },
             allow_add_new_key=True
         )

@@ -5,6 +5,13 @@ from egpo_utils.train.train import train
 from egpo_utils.train.utils import get_train_parser
 import datetime
 
+try:
+    import evdev
+    from evdev import ecodes, InputDevice
+except ImportError:
+    raise ValueError("Install evdev to enable joystick control")
+
+
 def get_time_str():
     return datetime.datetime.now().strftime("%y%m%d-%H%M%S")
 
@@ -12,17 +19,16 @@ def get_time_str():
 if __name__ == '__main__':
     args = get_train_parser().parse_args()
 
-    exp_name = "EGPO_{}".format(get_time_str()) or args.exp_name
+    exp_name = "EGPO_Human_exp{}".format(get_time_str()) or args.exp_name
     stop = {"timesteps_total": 20_0000}
 
     config = dict(
         env=HumanInTheLoopEnv,
         env_config={
-            "manual_control": False,
+            "manual_control": True,
             "use_render": True,
-            "window_size":(1600, 1100)
+            "window_size": (1600, 1100)
         },
-
 
         # ===== Training =====
         takeover_data_discard=False,
@@ -66,6 +72,6 @@ if __name__ == '__main__':
         # num_seeds=2,
         num_seeds=1,
         custom_callback=SaverCallbacks,
-        # test_mode=True,
-        # local_mode=True
+        test_mode=True,
+        local_mode=True
     )
