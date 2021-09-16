@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+
+<!-- === Header Starts === -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Expert Guided Policy Optimization</title>
+    <link href="./assets/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/font.css" rel="stylesheet" type="text/css">
+    <link href="./assets/style.css" rel="stylesheet" type="text/css">
+    <script src="./assets/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/corpus.js"></script>
+
+</head>
+<!-- === Header Ends === -->
+
+<script>
+    var lang_flag = 1;
+</script>
+
+<body>
+
+<!-- === Home Section Starts === -->
+<div class="section">
+    <!-- === Title Starts === -->
+    <div class="header">
+        <div class="logo">
+            <a href="https://decisionforce.github.io/" target="_blank">
+                <img src="images/deciforce.png">
+            </a>
+        </div>
+        <div style="padding-top: 30pt; margin: 0 50pt;" class="title" id="lang">
+            Safe Driving via Expert Guided Policy Optimization
+        </div>
+        <br>
+    </div>
+    <!-- === Title Ends === -->
+
+    <div class="author">
+        <a href="https://pengzhenghao.github.io" target="_blank">Zhenghao Peng</a><sup>1</sup>*,&nbsp;&nbsp;
+        <a href="#">Quanyi Li</a><sup>2</sup>*,&nbsp;
+        <a href="#">Chunxiao Liu</a><sup>3</sup>,&nbsp;
+        <a href="http://bzhou.ie.cuhk.edu.hk" target="_blank">Bolei Zhou</a><sup>1</sup>&nbsp;
+    </div>
+
+    <div class="institution" style="font-size: 11pt;">
+        <div>
+            <sup>1</sup>The Chinese University of Hong Kong, <br>
+            <sup>2</sup>Centre for Perceptual and Interactive Intelligence, <br>
+            <sup>3</sup>SenseTime Research
+        </div>
+    </div>
+    <table border="0" align="center">
+        <tr>
+            <td align="center" style="padding: 0pt 0 15pt 0">
+                <a class="bar" href="https://github.com/decisionforce/EGPO"><b>Code</b></a> |
+                <a class="bar" href="https://openreview.net/pdf?id=KnOYrZf17CQ"><b>Paper (OpenReview)</b></a>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<!-- === Home Section Ends === -->
+
+
+<!-- === Overview Section Starts === -->
+<div class="section">
+    <div class="title" id="lang">Expert Guided Policy Optimization (EGPO)</div>
+    <div class="body">
+        <div class="teaser">
+            <img src="images/framework1.png">
+        </div>
+
+        <div class="text">
+            <br>
+            <p>
+                When learning common skills like driving, beginners usually have
+                experienced people or domain experts standing by to ensure the safety of the
+                learning process.
+                We formulate such learning scheme under the Expert-in-the-loop
+                Reinforcement Learning where a guardian is introduced to safeguard the
+                exploration of the learning agent.
+                Following such new setting, we develop a novel <b>Expert Guided Policy Optimization
+                (EGPO)</b> method.
+            </p>
+            <p>
+                This method integrates the guardian in the loop of reinforcement
+                learning, which is composed of an expert policy to generate demonstration and a
+                switch function to decide when to intervene.
+                We utilize constrained optimization and offline RL techniques to tackle trivial solutions
+                and improve the learning on expert's demonstrations.
+            </p>
+            <p>
+                Safe driving experiments show that our method achieves superior training and
+                test-time safety, outperforms baselines with a large margin in sample efficiency,
+                and preserves the generalization capacity to unseen environments in test-time.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="section">
+    <div class="title" id="lang">Illustrative Video</div>
+    <div class="body">
+        <div class="text">
+            The following video demonstrates the learned behaviors of EGPO and also
+            an experiment where we apply EGPO to human-in-the-loop setting.
+        </div>
+        <div class="vedio" style="position: relative; padding-top: 50%; margin: 20pt auto; text-align: center;">
+            <iframe src="https://www.youtube.com/embed/vaU_ZoydRaA" frameborder=0
+                    style="position: absolute; top: 2.5%; left: 2.5%; width: 95%; height: 100%;"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+
+<!-- === Result Section Starts === -->
+<div class="section">
+    <div class="title" id="lang">Experiment Result</div>
+    <div class="body">
+        <div class="text">
+            We show that the proposed framework can achieve superior training efficiency and performance
+            as well as extremely low training safety violations in the safe driving tasks of
+            <a href="https://github.com/decisionforce/metadrive">MetaDrive Simulator</a>.
+        </div>
+        <div class="teaser"><img
+                src="images/result.png">
+        </div>
+    </div>
+</div>
+<!-- === Result Section Ends === -->
+
+
+<!-- === Reference Section Starts === -->
+<div class="section">
+    <div class="bibtex">
+        <div class="text">Citation</div>
+    </div>
+
+    <!--    If you find this work useful in your project, please consider to cite it through:-->
+    This work is accepted to CoRL 2021. BibTeX code is coming soon!
+    <pre>
+
+    </pre>
+    <!-- Adjust the frame size based on the demo (Every project differs). -->
+</div>
+
+</body>
+</html>
