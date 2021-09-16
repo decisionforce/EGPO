@@ -7,7 +7,7 @@ if __name__ == "__main__":
         vehicle_config=dict(
             use_saver=True,
             free_level=0.95,
-            overtake_stat=True,
+            # overtake_stat=True,
             expert_deterministic=False,
             # spawn_lateral=7,
             # increment_steering=True

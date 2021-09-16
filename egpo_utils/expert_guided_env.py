@@ -1,11 +1,48 @@
 import os.path as osp
+from egpo_utils.expert_obs import ExpertObservation
 
 import gym
 import numpy as np
 from metadrive.envs.safe_metadrive_env import SafeMetaDriveEnv
 from metadrive.utils.config import Config
+import math
 
-from egpo_utils.common import load_weights, expert_action_prob
+
+def normpdf(x, mean, sd):
+    var = float(sd) ** 2
+    denom = (2 * math.pi * var) ** .5
+    num = math.exp(-(float(x) - float(mean)) ** 2 / (2 * var))
+    return num / denom
+
+
+def load_weights(path: str):
+    """
+    Load NN weights
+    :param path: weights file path path
+    :return: NN weights object
+    """
+    # try:
+    model = np.load(path)
+    return model
+    # except FileNotFoundError:
+    # print("Can not find {}, didn't load anything".format(path))
+    # return None
+
+
+def expert_action_prob(action, obs, weights, deterministic=False):
+    obs = obs.reshape(1, -1)
+    x = np.matmul(obs, weights["default_policy/fc_1/kernel"]) + weights["default_policy/fc_1/bias"]
+    x = np.tanh(x)
+    x = np.matmul(x, weights["default_policy/fc_2/kernel"]) + weights["default_policy/fc_2/bias"]
+    x = np.tanh(x)
+    x = np.matmul(x, weights["default_policy/fc_out/kernel"]) + weights["default_policy/fc_out/bias"]
+    x = x.reshape(-1)
+    mean, log_std = np.split(x, 2)
+    std = np.exp(log_std)
+    a_0_p = normpdf(action[0], mean[0], std[0])
+    a_1_p = normpdf(action[1], mean[1], std[1])
+    expert_action = np.random.normal(mean, std) if not deterministic else mean
+    return expert_action, a_0_p, a_1_p
 
 
 class ExpertGuidedEnv(SafeMetaDriveEnv):
@@ -24,7 +61,7 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
 
             # traffic setting
             random_traffic=False,
-            traffic_density=0.2,
+            # traffic_density=0.1,
 
             # special setting
             rule_takeover=False,
@@ -40,7 +77,7 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
                 release_threshold=100,  # the save will be released when level < this threshold
                 overtake_stat=False),  # set to True only when evaluate
 
-            expert_value_weights=osp.join(osp.dirname(__file__), "5_14_safe_expert.npz")
+            expert_value_weights=osp.join(osp.dirname(__file__), "expert.npz")
         ), allow_add_new_key=True)
         return config
 
@@ -51,6 +88,7 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
         if config.get("safe_rl_env_v2", False):
             config["out_of_road_penalty"] = 0
         super(ExpertGuidedEnv, self).__init__(config)
+        self.expert_observation = ExpertObservation(self.config["vehicle_config"])
         assert self.config["expert_value_weights"] is not None
         self.total_takeover_cost = 0
         self.total_native_cost = 0
@@ -72,7 +110,7 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
         return super(ExpertGuidedEnv, self)._get_reset_return()
 
     def step(self, actions):
-        actions, saver_info =self.saver("default_agent", actions)
+        actions, saver_info = self.saver("default_agent", actions)
         obs, r, d, info, = super(ExpertGuidedEnv, self).step(actions)
         saver_info.update(info)
         info = self.extra_step_info(saver_info)
@@ -110,6 +148,9 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
                 done = False
         return done, done_info
 
+    def _is_out_of_road(self, vehicle):
+        return vehicle.out_of_route
+
     def saver(self, v_id: str, actions):
         """
         Action prob takeover
@@ -125,7 +166,7 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
         if vehicle.config["use_saver"] or vehicle.expert_takeover:
             # saver can be used for human or another AI
             free_level = vehicle.config["free_level"] if not vehicle.expert_takeover else 1.0
-            obs = self.observations[v_id].current_observation
+            obs = self.expert_observation.observe(vehicle)
             try:
                 saver_a, a_0_p, a_1_p = expert_action_prob(action, obs, self.expert_weights,
                                                            deterministic=vehicle.config["expert_deterministic"])
