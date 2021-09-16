@@ -4,9 +4,7 @@
 <!-- === Header Starts === -->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-    <title>MetaDrive</title>
-
+    <title>Expert Guided Policy Optimization</title>
     <link href="./assets/bootstrap.min.css" rel="stylesheet">
     <link href="./assets/font.css" rel="stylesheet" type="text/css">
     <link href="./assets/style.css" rel="stylesheet" type="text/css">
@@ -31,7 +29,7 @@
                 <img src="images/deciforce.png">
             </a>
         </div>
-        <div style="padding-top: 10pt;" class="title" id="lang">
+        <div style="padding-top: 30pt; margin: 0 50pt;" class="title" id="lang">
             Safe Driving via Expert Guided Policy Optimization
         </div>
         <br>
@@ -39,35 +37,27 @@
     <!-- === Title Ends === -->
 
     <div class="author">
+        <a href="https://pengzhenghao.github.io" target="_blank">Zhenghao Peng</a><sup>1</sup>*,&nbsp;&nbsp;
         <a href="#">Quanyi Li</a><sup>2</sup>*,&nbsp;
-        <a href="https://pengzhenghao.github.io" target="_blank">Zhenghao Peng</a><sup>1</sup>*,&nbsp;
-        <a href="#">Qihang Zhang</a><sup>2,3</sup>,&nbsp;
-        <a href="#">Cong Qiu</a><sup>2</sup>,&nbsp;
-        <a href="#">Chunxiao Liu</a><sup>2</sup>,&nbsp;
+        <a href="#">Chunxiao Liu</a><sup>3</sup>,&nbsp;
         <a href="http://bzhou.ie.cuhk.edu.hk" target="_blank">Bolei Zhou</a><sup>1</sup>&nbsp;
     </div>
 
-    <div class="institution">
-        <div><sup>1</sup>The Chinese University of Hong Kong, <sup>2</sup>SenseTime Research, <sup>3</sup>Zhejiang
-            University
+    <div class="institution" style="font-size: 11pt;">
+        <div>
+            <sup>1</sup>The Chinese University of Hong Kong, <br>
+            <sup>2</sup>Centre for Perceptual and Interactive Intelligence, <br>
+            <sup>3</sup>SenseTime Research
         </div>
     </div>
     <table border="0" align="center">
         <tr>
             <td align="center" style="padding: 0pt 0 15pt 0">
-                <a class="bar" href="https://github.com/decisionforce/metadrive"><b>Code</b></a> |
-                <a class="bar" href="https://metadrive-simulator.readthedocs.io/"><b>Documentation</b></a> |
-                <a class="bar" href="https://arxiv.org/pdf/2012.13681"><b>Paper</b></a>
+                <a class="bar" href="https://github.com/decisionforce/EGPO"><b>Code</b></a> |
+                <a class="bar" href="https://openreview.net/pdf?id=KnOYrZf17CQ"><b>Paper (OpenReview)</b></a>
             </td>
         </tr>
     </table>
-
-    <div style="position: relative;">
-        <div style="position:absolute;right:0;bottom: 0;">
-            <a class="switch" id=0>[EN]</a>&nbsp;
-            <a class="switch" id=1>[中文]</a>
-        </div>
-    </div>
 
 </div>
 <!-- === Home Section Ends === -->
@@ -75,100 +65,70 @@
 
 <!-- === Overview Section Starts === -->
 <div class="section">
-    <div class="title" id="lang">Overview of MetaDrive Simulator</div>
+    <div class="title" id="lang">Expert Guided Policy Optimization (EGPO)</div>
     <div class="body">
         <div class="teaser">
-            <img src="images/panel.jpg">
+            <img src="images/framework1.png">
         </div>
 
         <div class="text">
-            To better evaluate and improve the generalization of learning-based driving systems, we introduce an
-            open-ended
-            and highly configurable driving simulator called MetaDrive.
-            MetaDrive can generate a diverse set of driving scenes through procedural generalization from basic traffic
-            building blocks. Currently the simulator is used to study the generalization of the driving agents trained
-            from reinforcement learning. See <a href="https://arxiv.org/pdf/2012.13681">paper</a> for more detail.
+            <br>
+            <p>
+                When learning common skills like driving, beginners usually have
+                experienced people or domain experts standing by to ensure the safety of the
+                learning process.
+                We formulate such learning scheme under the Expert-in-the-loop
+                Reinforcement Learning where a guardian is introduced to safeguard the
+                exploration of the learning agent.
+                Following such new setting, we develop a novel <b>Expert Guided Policy Optimization
+                (EGPO)</b> method.
+            </p>
+            <p>
+                This method integrates the guardian in the loop of reinforcement
+                learning, which is composed of an expert policy to generate demonstration and a
+                switch function to decide when to intervene.
+                We utilize constrained optimization and offline RL techniques to tackle trivial solutions
+                and improve the learning on expert's demonstrations.
+            </p>
+            <p>
+                Safe driving experiments show that our method achieves superior training and
+                test-time safety, outperforms baselines with a large margin in sample efficiency,
+                and preserves the generalization capacity to unseen environments in test-time.
+            </p>
         </div>
     </div>
 </div>
+
+
 <div class="section">
-    <div class="title" id="lang">Procedural Generation of Driving Scenes</div>
-    <p>
-    <div class="text">We first define the elementary road blocks as follows,</div>
-    <div class="teaser"><img
-            src="images/blocks-1row.jpg">
-    </div>
-    <div class="text">we then follow the proposed algorithm of procedural generation to synthesize maps:</div>
-
-    <div align="center">
-        <table width="70%" style="margin: 0 0; text-align: center;">
-            <tr>
-                <td>
-                    <video style="display:block; width:98%; height:auto;"
-                           autoplay="autoplay" controls muted loop="loop">
-                        <source src="https://github.com/decisionforce/metadrive/releases/download/metadrive-0.1.2/BIG-demo.mp4"
-                                type="video/mp4"/>
-                    </video>
-                </td>
-            </tr>
-        </table>
-    </div>
-    
-
-    <div class="text">We exhibit more generated maps as follows, which are further turned into interactive environments
-        for reinforcement learning of end-to-end driving.
-    </div>
-    <div class="teaser"><img
-            src="images/webpage2.001.png">
-    </div>
-    <div class="teaser"><img
-            src="images/webpage2.002.png">
-    </div>
-    </p>
-
-</div>
-</div>
-<!-- === Overview Section Ends === -->
-
-
-<!-- === Result Section Starts === -->
-<div class="section">
-    <div class="title" id="lang">Result of Improved Generalization</div>
+    <div class="title" id="lang">Illustrative Video</div>
     <div class="body">
-        <p>
         <div class="text">
-            We show that when trained with more procedurally generated maps, the driving agents from reinofrcement
-            learning have better generalization performance on unseen test maps, and can handle more complex scenarios.
-            The detailed experimental results are in the paper. You can reproduce the experiment through <a
-                href="https://github.com/decisionforce/metadrive-generalization-paper">our generalization experiment
-            code</a>.
-        </div>
-        <div class="teaser"><img
-                src="images/sac-up.jpg">
-        </div>
-        <div class="teaser"><img
-                src="images/sac-down.jpg">
-        </div>
-        </p>
-        <p>
-        <div class="text">
-            The demo video of the generalizable agent is shown as follows. You can run the agent on your local machine
-            through the provided example in <a href="https://github.com/decisionforce/metadrive">the simulator
-            codebase</a>.
+            The following video demonstrates the learned behaviors of EGPO and also
+            an experiment where we apply EGPO to human-in-the-loop setting.
         </div>
         <div class="vedio" style="position: relative; padding-top: 50%; margin: 20pt auto; text-align: center;">
-            <iframe src="https://www.youtube.com/embed/T368RveOY9g" frameborder=0
+            <iframe src="https://www.youtube.com/embed/vaU_ZoydRaA" frameborder=0
                     style="position: absolute; top: 2.5%; left: 2.5%; width: 95%; height: 100%;"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe>
         </div>
-        <p>
-            <a class="text" href="https://github.com/decisionforce/metadrive/releases/download/metadrive-0.1.1/agents.mp4"
-               target="_blank">
-                Download the video.
-            </a>
-        </p>
-        </p>
+    </div>
+</div>
+
+
+<!-- === Result Section Starts === -->
+<div class="section">
+    <div class="title" id="lang">Experiment Result</div>
+    <div class="body">
+        <div class="text">
+            We show that the proposed framework can achieve superior training efficiency and performance
+            as well as extremely low training safety violations in the safe driving tasks of
+            <a href="https://github.com/decisionforce/metadrive">MetaDrive Simulator</a>.
+        </div>
+        <div class="teaser"><img
+                src="images/result.png">
+        </div>
     </div>
 </div>
 <!-- === Result Section Ends === -->
@@ -179,9 +139,9 @@
     <div class="bibtex">
         <div class="text">Citation</div>
     </div>
-  
-<!--    If you find this work useful in your project, please consider to cite it through:-->
-  This paper is accepted to CoRL 2021. BibTeX code is coming soon!
+
+    <!--    If you find this work useful in your project, please consider to cite it through:-->
+    This work is accepted to CoRL 2021. BibTeX code is coming soon!
     <pre>
 
     </pre>
