@@ -6,7 +6,6 @@ from egpo_utils.train import train, get_train_parser
 
 if __name__ == '__main__':
     args = get_train_parser().parse_args()
-    expert_value_weights = "./expert.npz"
 
     exp_name = "EGPO" or args.exp_name
     stop = {"timesteps_total": 20_0000}
@@ -18,7 +17,6 @@ if __name__ == '__main__':
                 use_saver=True,
                 free_level=0.95,
             ),
-            expert_value_weights=expert_value_weights,
             cost_to_reward=tune.grid_search([True, False]),
             # rule_takeover=True,
             safe_rl_env=True),
