@@ -37,7 +37,7 @@ if __name__ == '__main__':
     last = 0
     while episode_num < num:
         last += 1
-        action = expert(env, obs)
+        action = expert(env, env.expert_observation.observe(env.vehicle))
         new_obs, reward, done, info = env.step(action)
         pool.append({SampleBatch.OBS: list(obs), SampleBatch.ACTIONS: list(action), SampleBatch.NEXT_OBS: list(new_obs),
                      SampleBatch.DONES: done,

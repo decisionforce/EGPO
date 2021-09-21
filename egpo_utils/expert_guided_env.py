@@ -94,7 +94,7 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
         return super(ExpertGuidedEnv, self)._get_reset_return()
 
     def step(self, actions):
-        actions, saver_info = self.saver("default_agent", actions)
+        actions, saver_info = self.expert_takeover("default_agent", actions)
         obs, r, d, info, = super(ExpertGuidedEnv, self).step(actions)
         saver_info.update(info)
         info = self.extra_step_info(saver_info)
@@ -135,7 +135,7 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
     def _is_out_of_road(self, vehicle):
         return vehicle.out_of_route
 
-    def saver(self, v_id: str, actions):
+    def expert_takeover(self, v_id: str, actions):
         """
         Action prob takeover
         """
@@ -230,29 +230,3 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
             "takeover": vehicle.takeover if pre_save else False
         }
         return (steering, throttle) if saver_info["takeover"] else action, saver_info
-
-
-class SmartExpertGuidedEnv(ExpertGuidedEnv):
-
-    def saver(self, v_id: str, tuple_action):
-        assert len(tuple_action[v_id]) == 3, "action space error"
-        vehicle = self.vehicles[v_id]
-        vehicle.config["free_level"] = tuple_action[v_id][-1]
-        return super(SmartExpertGuidedEnv, self).saver(v_id, tuple_action)
-
-    @property
-    def action_space(self):
-        return gym.spaces.Box(-1.0, 1.0, shape=(3,), dtype=np.float32)
-
-
-if __name__ == '__main__':
-    e = SmartExpertGuidedEnv(dict(use_render=True, vehicle_config=dict(use_saver=True)))
-    print(e.action_space)
-    print(e.observation_space)
-    e.reset()
-    for _ in range(100000):
-        a = e.action_space.sample()
-        a[-1] = 1
-        i = e.step(a)
-        e.render(text=dict(action=a))
-    e.close()
