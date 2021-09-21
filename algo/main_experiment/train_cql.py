@@ -13,13 +13,7 @@ data_set_file_path = os.path.join(os.path.dirname(__file__), 'expert_traj_500.js
 
 
 def get_data_sampler_func(ioctx):
-    try:
-        file = open(data_set_file_path)
-    except FileNotFoundError:
-        raise ValueError("Please collect dataset by using collect_dataset.py at first")
-
     return CQLInputReader(data_set_file_path)
-
 
 eval_config = copy.deepcopy(evaluation_config)
 eval_config["input"] = "sampler"  # important to use pgdrive online evaluation
@@ -27,6 +21,10 @@ eval_config["env_config"]["random_spawn"] = tune.grid_search([True, False])
 
 if __name__ == '__main__':
     print(data_set_file_path)
+    try:
+        file = open(data_set_file_path)
+    except FileNotFoundError:
+        raise FileExistsError("Please collect dataset by using collect_dataset.py at first")
     assert ray.__version__ == "1.3.0" or ray.__version__ == "1.2.0", "ray 1.3.0 is required"
     args = get_train_parser().parse_args()
 

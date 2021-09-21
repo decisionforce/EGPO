@@ -21,6 +21,10 @@ eval_config["input"] = "sampler"  # important to use pgdrive online evaluation
 eval_config["env_config"]["random_spawn"] = tune.grid_search([True, False])
 
 if __name__ == '__main__':
+    try:
+        file = open(data_set_file_path)
+    except FileNotFoundError:
+        FileExistsError("Please collect dataset by using collect_dataset.py at first")
     print(data_set_file_path)
     assert ray.__version__ == "1.3.0" or ray.__version__ == "1.2.0", "ray 1.3.0 is required"
     args = get_train_parser().parse_args()
