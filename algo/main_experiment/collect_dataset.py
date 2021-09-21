@@ -1,15 +1,8 @@
 import json
-import numpy as np
 from ray.rllib.policy.sample_batch import SampleBatch
 
 from egpo_utils.expert_guided_env import ExpertGuidedEnv
-from egpo_utils.common import  expert_action_prob
-
-
-def expert(env, obs):
-    saver_a, a_0_p, a_1_p = expert_action_prob([0, 0], obs, env.expert_weights,
-                                               deterministic=False)
-    return saver_a
+from egpo_utils.common import get_expert_action
 
 
 def process_info(info):
@@ -37,7 +30,7 @@ if __name__ == '__main__':
     last = 0
     while episode_num < num:
         last += 1
-        action = expert(env, env.expert_observation.observe(env.vehicle))
+        action = get_expert_action(env)
         new_obs, reward, done, info = env.step(action)
         pool.append({SampleBatch.OBS: list(obs), SampleBatch.ACTIONS: list(action), SampleBatch.NEXT_OBS: list(new_obs),
                      SampleBatch.DONES: done,

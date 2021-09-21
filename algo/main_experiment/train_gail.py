@@ -54,13 +54,13 @@ training_config = dict(
         use_saver=False,
         free_level=100),
     safe_rl_env=True,
-    auto_termination=True,
+    horizon=1000,
     random_spawn=True,
 )
 
 eval_config = evaluation_config["env_config"]
 eval_config["random_spawn"] = True
-eval_config["auto_termination"] = True
+eval_config["horizon"] = 1000
 
 
 def make_env(env_cls, rank, config, seed=0):

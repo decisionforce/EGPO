@@ -370,3 +370,10 @@ class ExpertObservation(ObservationBase):
             self.cloud_points = cloud_points
             self.detected_objects = detected_objects
         return other_v_info
+
+
+def get_expert_action(env):
+    obs = env.expert_observation.observe(env.vehicle)
+    saver_a, a_0_p, a_1_p = expert_action_prob([0, 0], obs, env.expert_weights,
+                                               deterministic=False)
+    return saver_a

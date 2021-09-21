@@ -53,6 +53,7 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
             cost_info="native",  # or takeover
             random_spawn=False,  # used to collect dataset
             cost_to_reward=True,  # for egpo, it accesses the ENV reward by penalty
+            horizon=1000,
 
             vehicle_config=dict(  # saver config, free_level:0 = expert
                 use_saver=False,

@@ -20,6 +20,7 @@ setup(
         "gym==0.18.0",
         "ray==1.0.0",
         "stable_baselines3",
+        "pickle5",
 
         # "torch",
         # "pytorch==1.5.0", # conda install

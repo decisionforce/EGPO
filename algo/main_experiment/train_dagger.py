@@ -4,10 +4,11 @@ from egpo_utils.dagger.exp_saver import Experiment
 
 import os.path as osp
 
-from egpo_utils.process.vis_model_utils import expert_action_prob
-from egpo_utils.safe_generalization.run import load_weights
+from egpo_utils.common import get_expert_action
 from egpo_utils.expert_guided_env import ExpertGuidedEnv
-from egpo_utils import *
+import torch
+from egpo_utils.dagger.utils import store_data, read_data, train_model, evaluation
+import numpy as np
 from stable_baselines3.common.vec_env.subproc_vec_env import SubprocVecEnv
 from egpo_utils.dagger.model import Model
 import os
@@ -32,12 +33,12 @@ training_config = dict(
         use_saver=False,
         free_level=100),
     safe_rl_env=True,
-    auto_termination=True,
+    horizon=1000,
 )
 
 # test env config
 eval_config = evaluation_config["env_config"]
-eval_config["auto_termination"] = True
+eval_config["horizon"] = 1000
 
 
 def make_env(env_cls, config, seed=0):
@@ -49,14 +50,6 @@ def make_env(env_cls, config, seed=0):
 
 
 expert_weights = None
-
-
-def get_expert_action(obs):
-    global expert_weights
-    if expert_weights is None:
-        expert_weights = load_weights(osp.join(osp.dirname(osp.dirname(__file__)), "expert.npz"))
-    saver_a, *_ = expert_action_prob([0, 0], obs, expert_weights, deterministic=False)
-    return saver_a
 
 
 if __name__ == "__main__":
