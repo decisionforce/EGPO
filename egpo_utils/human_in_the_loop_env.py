@@ -26,15 +26,17 @@ class HumanInTheLoopEnv(SafeMetaDriveEnv):
         return config
 
     def reset(self, *args, **kwargs):
-
+        self.t_o = False
         self.total_takeover_cost = 0
         return super(HumanInTheLoopEnv, self).reset(*args, **kwargs)
 
     def _get_step_return(self, actions, step_infos):
         o, r, d, step_infos = super(HumanInTheLoopEnv, self)._get_step_return(actions, step_infos)
         controller = self.engine.get_policy(self.vehicle.id)
-        step_infos["takeover"] = controller.takeover if hasattr(controller, "takeover") else False
-        if step_infos["takeover"]:
+        last_t_o = self.t_o
+        self.t_o = controller.takeover if hasattr(controller, "takeover") else False
+        step_infos["takeover"] = self.t_o
+        if step_infos["takeover"] and not last_t_o:
             self.total_takeover_cost += 1
         step_infos["takeover_cost"] = 1 if step_infos["takeover"] else 0
         step_infos["total_takeover_cost"] = self.total_takeover_cost
@@ -44,13 +46,11 @@ class HumanInTheLoopEnv(SafeMetaDriveEnv):
 
     def step(self, actions):
         ret = super(HumanInTheLoopEnv, self).step(actions)
-        controller = self.engine.get_policy(self.vehicle.id)
-        t_o = controller.takeover if hasattr(controller, "takeover") else False
         if self.config["use_render"]:
             super(HumanInTheLoopEnv, self).render(text={
                 "Total Cost": self.episode_cost,
                 "Total Takeover Cost": self.total_takeover_cost,
-                "Takeover": t_o
+                "Takeover": self.t_o
             })
         return ret
 

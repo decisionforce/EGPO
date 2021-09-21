@@ -1,5 +1,5 @@
-from egpo_utils.common import SaverCallbacks
-from egpo_utils.egpo.sac_pid_saver import SACPIDSaverTrainer
+from egpo_utils.common import EGPOCallbacks
+from egpo_utils.egpo.egpo import EGPOTrainer
 from egpo_utils.human_in_the_loop_env import HumanInTheLoopEnv
 from egpo_utils.train.train import train
 from egpo_utils.train.utils import get_train_parser
@@ -44,7 +44,7 @@ if __name__ == '__main__':
         # k_i=tune.grid_search([0.01, 0.005, 0.001]),
 
         # expected max takeover num
-        cost_limit=200,
+        cost_limit=10,
         optimization=dict(actor_learning_rate=1e-4, critic_learning_rate=1e-4, entropy_learning_rate=1e-4),
         prioritized_replay=False,
         horizon=400,
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     )
 
     train(
-        SACPIDSaverTrainer,
+        EGPOTrainer,
         exp_name=exp_name,
         keep_checkpoints_num=None,
         checkpoint_freq=1,
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         num_gpus=args.num_gpus,
         # num_seeds=2,
         num_seeds=1,
-        custom_callback=SaverCallbacks,
+        custom_callback=EGPOCallbacks,
         # test_mode=True,
         # local_mode=True
     )

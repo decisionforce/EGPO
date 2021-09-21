@@ -31,9 +31,6 @@ if __name__ == "__main__":
         # rule_takeover=True,
 
         safe_rl_env=True,
-        start_seed=108,
-        environment_num=1,
-
         use_render=True,
         # debug=True,
         manual_control=False))

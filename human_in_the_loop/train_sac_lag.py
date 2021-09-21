@@ -1,5 +1,5 @@
-from egpo_utils.safe_generalization.callback import SafeGeneralizationCallbacks
-from egpo_utils.safety.sac_pid.sac_pid import SACPIDTrainer
+from egpo_utils.common import EGPOCallbacks
+from egpo_utils.sac_pid.sac_pid import SACPIDTrainer
 from egpo_utils.human_in_the_loop_env import HumanInTheLoopEnv
 from egpo_utils.train import train, get_train_parser
 import datetime
@@ -55,7 +55,7 @@ if __name__ == '__main__':
         num_gpus=args.num_gpus,
         # num_seeds=2,
         num_seeds=1,
-        custom_callback=SafeGeneralizationCallbacks,
+        custom_callback=EGPOCallbacks,
         # test_mode=True,
         # local_mode=True
     )

@@ -1,20 +1,18 @@
 from ray.rllib.agents.sac.sac import SACTrainer
+from ray import tune
 from egpo_utils.expert_guided_env import ExpertGuidedEnv
-from egpo_utils.common import SaverCallbacks, evaluation_config
+from egpo_utils.common import EGPOCallbacks, evaluation_config
 from egpo_utils.train import train, get_train_parser
 
 if __name__ == '__main__':
     args = get_train_parser().parse_args()
 
-    exp_name = "SAC_rs_baseline" or args.exp_name
+    exp_name = "SAC_baseline" or args.exp_name
     stop = {"timesteps_total": 100_0000}
 
     config = dict(
         env=ExpertGuidedEnv,
         env_config=dict(
-            crash_vehicle_penalty=1.,
-            crash_object_penalty=0.5,
-            out_of_road_penalty=1.,
             vehicle_config=dict(
                 use_saver=False,
                 free_level=100),
@@ -53,7 +51,7 @@ if __name__ == '__main__':
         num_gpus=args.num_gpus,
         # num_seeds=1,
         num_seeds=5,
-        custom_callback=SaverCallbacks,
+        custom_callback=EGPOCallbacks,
         # test_mode=True,
         # local_mode=True
     )

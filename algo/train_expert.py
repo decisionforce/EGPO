@@ -1,6 +1,10 @@
-from egpo_utils.common import SaverCallbacks
+"""
+Expert is trained by this script
+"""
+
+from egpo_utils.common import EGPOCallbacks
 from egpo_utils.expert_guided_env import ExpertGuidedEnv
-from egpo_utils.safety.ppo_lag import PPOLag
+from egpo_utils.ppo_lag.ppo_lag import PPOLag
 from ray.rllib.agents.ppo.ppo import PPOTrainer
 from egpo_utils.train import train, get_train_parser
 from egpo_utils.common import evaluation_config
@@ -8,11 +12,11 @@ from ray import tune
 
 if __name__ == '__main__':
     args = get_train_parser()
-    args.add_argument("--PPO", action="store_true")
+    args.add_argument("--PPO", action="store_false")
     args = args.parse_args()
     trainer = PPOLag if not args.PPO else PPOTrainer
 
-    exp_name = "safe_expert" if not args.exp_name else args.exp_name
+    exp_name = "PPO_lag_expert" if not args.exp_name else args.exp_name
     stop = int(20_0000_0000)
 
     config = dict(
@@ -42,7 +46,7 @@ if __name__ == '__main__':
         lr=5e-5,
         rollout_fragment_length=200,
         sgd_minibatch_size=2048,
-        train_batch_size=320000,
+        train_batch_size=160000,
         num_gpus=0.2 if args.num_gpus != 0 else 0,
         num_cpus_per_worker=0.1,
         num_cpus_for_driver=1,
@@ -55,7 +59,7 @@ if __name__ == '__main__':
     train(
         trainer,
         exp_name=exp_name,
-        custom_callback=SaverCallbacks,
+        custom_callback=EGPOCallbacks,
         keep_checkpoints_num=5,
         stop=stop,
         config=config,

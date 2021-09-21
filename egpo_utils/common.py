@@ -77,7 +77,7 @@ class DrivingCallbacks(DefaultCallbacks):
             result["cost"] = result["custom_metrics"]["cost_mean"]
 
 
-class SaverCallbacks(DrivingCallbacks):
+class EGPOCallbacks(DrivingCallbacks):
     def on_episode_start(
             self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[str, Policy], episode: MultiAgentEpisode,
             env_index: int, **kwargs
@@ -186,7 +186,7 @@ evaluation_config = dict(env_config=dict(
 ))
 
 
-class ILCallBack(SaverCallbacks):
+class ILCallBack(EGPOCallbacks):
     def on_train_result(self, *, trainer, result: dict, **kwargs):
         result["success"] = np.nan
         result["crash"] = np.nan

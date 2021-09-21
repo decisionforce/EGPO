@@ -5,6 +5,7 @@ import gym
 import numpy as np
 from metadrive.envs.safe_metadrive_env import SafeMetaDriveEnv
 from metadrive.utils.config import Config
+from egpo_utils.common import expert_action_prob
 import math
 
 
@@ -27,22 +28,6 @@ def load_weights(path: str):
     # except FileNotFoundError:
     # print("Can not find {}, didn't load anything".format(path))
     # return None
-
-
-def expert_action_prob(action, obs, weights, deterministic=False):
-    obs = obs.reshape(1, -1)
-    x = np.matmul(obs, weights["default_policy/fc_1/kernel"]) + weights["default_policy/fc_1/bias"]
-    x = np.tanh(x)
-    x = np.matmul(x, weights["default_policy/fc_2/kernel"]) + weights["default_policy/fc_2/bias"]
-    x = np.tanh(x)
-    x = np.matmul(x, weights["default_policy/fc_out/kernel"]) + weights["default_policy/fc_out/bias"]
-    x = x.reshape(-1)
-    mean, log_std = np.split(x, 2)
-    std = np.exp(log_std)
-    a_0_p = normpdf(action[0], mean[0], std[0])
-    a_1_p = normpdf(action[1], mean[1], std[1])
-    expert_action = np.random.normal(mean, std) if not deterministic else mean
-    return expert_action, a_0_p, a_1_p
 
 
 class ExpertGuidedEnv(SafeMetaDriveEnv):

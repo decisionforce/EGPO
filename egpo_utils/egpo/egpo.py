@@ -30,8 +30,8 @@ from egpo_utils.sac_pid.sac_pid_policy import SACPIDConfig, SACPIDPolicy, Update
 NEWBIE_ACTION = "newbie_action"
 TAKEOVER = "takeover"
 
-SACPIDSaverConfig = merge_dicts(SACPIDConfig,
-                                {
+EGPOConfig = merge_dicts(SACPIDConfig,
+                         {
                                     "info_cost_key": "takeover_cost",
                                     "info_total_cost_key": "total_takeover_cost",
                                     "takeover_data_discard": False,
@@ -389,15 +389,15 @@ def sac_actor_critic_loss(policy, model, _, train_batch):
     return actor_loss + tf.math.add_n(critic_loss) + alpha_loss
 
 
-SACPIDSaverPolicy = SACPIDPolicy.with_updates(name="SACPIDSaverPolicy",
-                                              get_default_config=lambda: SACPIDSaverConfig,
-                                              postprocess_fn=postprocess_trajectory,
-                                              loss_fn=sac_actor_critic_loss)
+EGPOPolicy = SACPIDPolicy.with_updates(name="EGPOPolicy",
+                                       get_default_config=lambda: EGPOConfig,
+                                       postprocess_fn=postprocess_trajectory,
+                                       loss_fn=sac_actor_critic_loss)
 
-SACPIDSaverTrainer = SACPIDTrainer.with_updates(name="SACPIDSaverTrainer",
-                                                default_config=SACPIDSaverConfig,
-                                                default_policy=SACPIDSaverPolicy,
-                                                get_policy_class=lambda config: SACPIDSaverPolicy,
-                                                validate_config=validate_config,
-                                                execution_plan=execution_plan,
-                                                )
+EGPOTrainer = SACPIDTrainer.with_updates(name="EGPOTrainer",
+                                         default_config=EGPOConfig,
+                                         default_policy=EGPOPolicy,
+                                         get_policy_class=lambda config: EGPOPolicy,
+                                         validate_config=validate_config,
+                                         execution_plan=execution_plan,
+                                         )

@@ -1,4 +1,4 @@
-from egpo_utils.egpo.sac_pid_saver import SACPIDSaverTrainer
+from egpo_utils.egpo.egpo import EGPOTrainer
 from egpo_utils.human_in_the_loop_env import HumanInTheLoopEnv
 
 from egpo_utils.train.utils import initialize_ray
@@ -7,7 +7,7 @@ initialize_ray(test_mode=False)
 
 
 def get_function(ckpt):
-    trainer = SACPIDSaverTrainer(dict(
+    trainer = EGPOTrainer(dict(
 
         env=HumanInTheLoopEnv,
 

@@ -1,7 +1,7 @@
 from egpo_utils.expert_guided_env import ExpertGuidedEnv
 from ray import tune
-from egpo_utils.common import SaverCallbacks, evaluation_config
-from egpo_utils.safety.sac_pid.sac_pid import SACPIDTrainer
+from egpo_utils.common import EGPOCallbacks, evaluation_config
+from egpo_utils.sac_pid.sac_pid import SACPIDTrainer
 
 from egpo_utils.train import train, get_train_parser
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
         num_gpus=args.num_gpus,
         # num_seeds=args.num_seeds,
         num_seeds=8,
-        custom_callback=SaverCallbacks,
+        custom_callback=EGPOCallbacks,
         # num_seeds=1,
         # test_mode=True,
         # local_mode=True
