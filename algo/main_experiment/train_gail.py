@@ -46,6 +46,7 @@ BACKBONE = 'resnet18'
 N_STEP = 5
 dtype = torch.float32
 torch.set_default_dtype(dtype)
+
 expert_data_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'expert_traj_500.json')
 
 training_config = dict(
@@ -107,12 +108,15 @@ class Learner:
         self.eval_env = ExpertGuidedEnv(eval_config)
 
     def _load_expert_traj(self):
-        file = open(expert_data_path)
-        traj = json.load(file)
-        obs = [i["obs"] for i in traj]
-        action = [i["actions"] for i in traj]
-        self.exp_obs = torch.tensor(obs).to(self.cfg.device).float()
-        self.exp_action = torch.tensor(action).to(self.cfg.device).float()
+        try:
+            file = open(expert_data_path)
+            traj = json.load(file)
+            obs = [i["obs"] for i in traj]
+            action = [i["actions"] for i in traj]
+            self.exp_obs = torch.tensor(obs).to(self.cfg.device).float()
+            self.exp_action = torch.tensor(action).to(self.cfg.device).float()
+        except FileNotFoundError:
+            raise ValueError("Please collect dataset by using collect_dataset.py at first")
 
     def _init_env(self):
         # self.env = PGDriveEnv(dict(environment_num=1))

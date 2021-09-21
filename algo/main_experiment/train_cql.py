@@ -13,6 +13,11 @@ data_set_file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.realpa
 
 
 def get_data_sampler_func(ioctx):
+    try:
+        file = open(data_set_file_path)
+    except FileNotFoundError:
+        raise ValueError("Please collect dataset by using collect_dataset.py at first")
+
     return CQLInputReader(data_set_file_path)
 
 
