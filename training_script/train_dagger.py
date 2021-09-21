@@ -48,7 +48,7 @@ def make_env(env_cls, config, seed=0):
     return _init
 
 
-expert_weights = osp.join(osp.dirname(osp.dirname(__file__)), "egpo_utils/expert.npz")
+expert_weights = osp.join(osp.dirname(__file__), "egpo_utils/expert.npz")
 
 if __name__ == "__main__":
     if not os.path.exists("dagger_models"):

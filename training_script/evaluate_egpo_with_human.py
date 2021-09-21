@@ -49,12 +49,14 @@ if __name__ == '__main__':
     def make_env(env_id=None):
         return HumanInTheLoopEnv(dict(manual_control=False, use_render=False))
 
+
     from collections import defaultdict
+
     super_data = defaultdict(list)
     EPISODE_NUM = 50
 
     env = make_env()
-    for ckpt_idx in range(12, 163,10):
+    for ckpt_idx in range(12, 163, 10):
         ckpt = ckpt_idx
 
         compute_actions = get_function(
@@ -100,14 +102,14 @@ if __name__ == '__main__':
                 step = 0
 
         print(
-            "CKPT:{} | success_rate:{}, mean_episode_reward:{}, mean_episode_cost:{}".format(ckpt, success_rate / EPISODE_NUM,
+            "CKPT:{} | success_rate:{}, mean_episode_reward:{}, mean_episode_cost:{}".format(ckpt,
+                                                                                             success_rate / EPISODE_NUM,
                                                                                              total_reward / EPISODE_NUM,
                                                                                              total_cost / EPISODE_NUM))
 
         del compute_actions
 
     env.close()
-
 
     import json
 
@@ -118,6 +120,3 @@ if __name__ == '__main__':
         pass
 
     print(super_data)
-
-
-
