@@ -3,8 +3,7 @@ import copy
 import ray
 from ray import tune
 from egpo_utils.cql.cql import CQLTrainer
-from egpo_utils.common import evaluation_config, ILCallBack
-from egpo_utils.input_reader import InputReader
+from egpo_utils.common import evaluation_config, ILCallBack, CQLInputReader
 from egpo_utils.expert_guided_env import ExpertGuidedEnv
 from egpo_utils.train import get_train_parser
 from egpo_utils.train.train import train
@@ -13,7 +12,7 @@ data_set_file_path = "/home/liquanyi/drivingforce/drivingforce/saver/expert_traj
 
 
 def get_data_sampler_func(ioctx):
-    return InputReader(data_set_file_path)
+    return CQLInputReader(data_set_file_path)
 
 
 eval_config = copy.deepcopy(evaluation_config)
@@ -24,9 +23,12 @@ if __name__ == '__main__':
     print(data_set_file_path)
     assert ray.__version__ == "1.3.0" or ray.__version__ == "1.2.0", "ray 1.3.0 is required"
     args = get_train_parser().parse_args()
-
-    exp_name = "CQL" or args.exp_name
-    stop = {"timesteps_total": 100_0000_00000}
+    """
+    The initial stage of CQL is BC
+    """
+    bc_iters = 200_000
+    exp_name = "BC" or args.exp_name
+    stop = {"timesteps_total": bc_iters}
 
     config = dict(
         # ===== Evaluation =====
@@ -45,7 +47,7 @@ if __name__ == '__main__':
         lagrangian=False,  # Automatic temperature (alpha prime) control
         temperature=5,  # alpha prime in paper, 5 is best in pgdrive
         min_q_weight=0.2,  # best
-        bc_iters=20_0000,  # bc_iters > 20_0000 has no obvious improvement
+        bc_iters=bc_iters,  # bc_iters > 20_0000 has no obvious improvement
 
         # offline setting
         no_done_at_end=True,

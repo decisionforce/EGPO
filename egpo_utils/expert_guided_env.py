@@ -1,11 +1,10 @@
 import os.path as osp
-from egpo_utils.expert_obs import ExpertObservation
 
 import gym
 import numpy as np
 from metadrive.envs.safe_metadrive_env import SafeMetaDriveEnv
 from metadrive.utils.config import Config
-from egpo_utils.common import expert_action_prob
+from egpo_utils.common import expert_action_prob, ExpertObservation
 import math
 
 

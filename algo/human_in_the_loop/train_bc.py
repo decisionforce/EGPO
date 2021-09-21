@@ -1,10 +1,9 @@
-import copy
+
 
 import ray
-from ray import tune
 
-from egpo_utils.common import ILCallBack
-from egpo_utils.input_reader import InputReader
+
+from egpo_utils.common import ILCallBack, CQLInputReader
 from egpo_utils.human_in_the_loop_env import HumanInTheLoopEnv
 from egpo_utils.cql.cql import CQLTrainer
 from egpo_utils.train import get_train_parser
@@ -14,7 +13,7 @@ data_set_file_path = "/home/liquanyi/drivingforce/drivingforce/expert_in_the_loo
 
 
 def get_data_sampler_func(ioctx):
-    return InputReader(data_set_file_path)
+    return CQLInputReader(data_set_file_path)
 
 
 eval_config = dict()

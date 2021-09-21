@@ -54,7 +54,7 @@ expert_weights = None
 def get_expert_action(obs):
     global expert_weights
     if expert_weights is None:
-        expert_weights = load_weights(osp.join(osp.dirname(osp.dirname(__file__)), "5_14_safe_expert.npz"))
+        expert_weights = load_weights(osp.join(osp.dirname(osp.dirname(__file__)), "expert.npz"))
     saver_a, *_ = expert_action_prob([0, 0], obs, expert_weights, deterministic=False)
     return saver_a
 
