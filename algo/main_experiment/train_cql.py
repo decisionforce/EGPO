@@ -7,8 +7,9 @@ from egpo_utils.common import evaluation_config, ILCallBack, CQLInputReader
 from egpo_utils.expert_guided_env import ExpertGuidedEnv
 from egpo_utils.train import get_train_parser
 from egpo_utils.train.train import train
+import os
 
-data_set_file_path = "/home/liquanyi/drivingforce/drivingforce/saver/expert_traj_500.json"
+data_set_file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'expert_traj_500.json')
 
 
 def get_data_sampler_func(ioctx):

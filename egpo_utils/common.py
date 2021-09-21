@@ -1,4 +1,5 @@
 import json
+from stable_baselines3.common.vec_env.subproc_vec_env import SubprocVecEnv
 from typing import Dict
 import math
 
@@ -185,7 +186,7 @@ class EGPOCallbacks(DrivingCallbacks):
 
 # turn on overtake stata only in evaluation
 evaluation_config = dict(env_config=dict(
-    vehicle_config=dict(use_saver=False, overtake_stat=True),
+    vehicle_config=dict(use_saver=False, overtake_stat=False),
     safe_rl_env=True,
     start_seed=500,
     environment_num=50,
@@ -373,7 +374,10 @@ class ExpertObservation(ObservationBase):
 
 
 def get_expert_action(env):
-    obs = env.expert_observation.observe(env.vehicle)
-    saver_a, a_0_p, a_1_p = expert_action_prob([0, 0], obs, env.expert_weights,
-                                               deterministic=False)
-    return saver_a
+    if not isinstance(env, SubprocVecEnv):
+        obs = env.expert_observation.observe(env.vehicle)
+        saver_a, a_0_p, a_1_p = expert_action_prob([0, 0], obs, env.expert_weights,
+                                                   deterministic=False)
+        return saver_a
+    else:
+        return env.env_method("get_expert_action")

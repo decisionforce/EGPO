@@ -2,8 +2,6 @@ from __future__ import print_function
 import time
 from egpo_utils.dagger.exp_saver import Experiment
 
-import os.path as osp
-
 from egpo_utils.common import get_expert_action
 from egpo_utils.expert_guided_env import ExpertGuidedEnv
 import torch
@@ -13,6 +11,7 @@ from stable_baselines3.common.vec_env.subproc_vec_env import SubprocVecEnv
 from egpo_utils.dagger.model import Model
 import os
 from egpo_utils.common import evaluation_config
+import os.path as osp
 
 # require loguru imageio easydict tensorboardX pyyaml pytorch==1.5.0 stable_baselines3, cudatoolkit==9.2
 
@@ -49,8 +48,7 @@ def make_env(env_cls, config, seed=0):
     return _init
 
 
-expert_weights = None
-
+expert_weights = osp.join(osp.dirname(osp.dirname(__file__)), "egpo_utils/expert.npz")
 
 if __name__ == "__main__":
     if not os.path.exists("dagger_models"):
@@ -63,6 +61,7 @@ if __name__ == "__main__":
     exp_log.init(log_dir=log_dir)
 
     training_env = SubprocVecEnv([make_env(ExpertGuidedEnv, config=training_config)])  # seperate with eval env
+
     eval_env = ExpertGuidedEnv(eval_config)
 
     obs_shape = eval_env.observation_space.shape[0]
@@ -101,7 +100,7 @@ if __name__ == "__main__":
         while True:
             # preprocess image and find prediction ->  policy(state)
             prediction = agent(torch.tensor(state).to(device).float())
-            expert_a = get_expert_action(state)
+            expert_a = get_expert_action(training_env)[0]
             pi = curr_beta * expert_a + (1 - curr_beta) * prediction.detach().cpu().numpy().flatten()
 
             next_state, r, done, info = training_env.step([pi])

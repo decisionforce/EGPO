@@ -78,12 +78,19 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
         self.total_takeover_cost = 0
         self.total_native_cost = 0
         self.state_value = 0
-        if self.config["vehicle_config"]["use_saver"]:
-            self.expert_weights = load_weights(self.config["expert_value_weights"])
+        self.expert_weights = load_weights(self.config["expert_value_weights"])
         if self.config["cost_to_reward"]:
             self.config["out_of_road_penalty"] = self.config["out_of_road_cost"]
             self.config["crash_vehicle_penalty"] = self.config["crash_vehicle_cost"]
             self.config["crash_object_penalty"] = self.config["crash_object_cost"]
+
+    def expert_observe(self):
+        return self.expert_observation.observe(self.vehicle)
+
+    def get_expert_action(self):
+        obs = self.expert_observation.observe(self.vehicle)
+        return expert_action_prob([0, 0], obs, self.expert_weights,
+                                  deterministic=False)[0]
 
     def _get_reset_return(self):
         assert self.num_agents == 1

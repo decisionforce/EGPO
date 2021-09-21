@@ -27,7 +27,6 @@ from metadrive.utils import get_np_random
 import os
 
 
-# require loguru imageio easydict tensorboardX pyyaml pytorch==1.5.0 stable_baselines3, cudatoolkit==9.2
 # PPO in this implement didn't use Advantage
 
 
@@ -47,7 +46,7 @@ BACKBONE = 'resnet18'
 N_STEP = 5
 dtype = torch.float32
 torch.set_default_dtype(dtype)
-expert_data_path = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'expert_traj_500.json')
+expert_data_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'expert_traj_500.json')
 
 training_config = dict(
     vehicle_config=dict(
@@ -117,7 +116,8 @@ class Learner:
 
     def _init_env(self):
         # self.env = PGDriveEnv(dict(environment_num=1))
-        self.env = SubprocVecEnv([make_env(GAILExpertGuidedEnv, i, config=training_config) for i in range(self.env_num)])
+        self.env = SubprocVecEnv(
+            [make_env(GAILExpertGuidedEnv, i, config=training_config) for i in range(self.env_num)])
         # self.env = make_vec_env('PGDrive-v0', n_envs=self.env_num, seed=0)
 
     def _process_cfg(self):
@@ -139,7 +139,7 @@ class Learner:
         episode_cost_mean = [0 for _ in range(self.env_num)]
         total_episode_reward = 0
         total_episode_cost = 0
-        total_episode_velocity=[]
+        total_episode_velocity = []
         for i in range(self.buffer_length):
             obs = torch.tensor(obs).to(self.cfg.device).float()
             with torch.no_grad():
@@ -150,7 +150,7 @@ class Learner:
             obs, reward, dones, info, = self.env.step(action.cpu().numpy())
             batch_reward.append(torch.tensor(reward))
 
-            total_episode_velocity+=[info[idx]["velocity"] for idx in range(self.env_num)]
+            total_episode_velocity += [info[idx]["velocity"] for idx in range(self.env_num)]
             episode_reward_mean = [episode_reward_mean[i] + reward[i] for i in range(self.env_num)]
             episode_cost_mean = [episode_cost_mean[i] + info[i]["native_cost"] for i in range(self.env_num)]
 
@@ -192,9 +192,9 @@ class Learner:
         success_num = 0
         episode_num = 0
         episode_cost = 0
-        velocity=[]
+        velocity = []
         state = env.reset()
-        episode_overtake=[]
+        episode_overtake = []
         while episode_num < evaluation_episode_num:
             state = torch.tensor([state]).to(self.cfg.device).float()
             with torch.no_grad():
