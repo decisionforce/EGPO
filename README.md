@@ -7,13 +7,13 @@ Official implementation of CoRL 2021 paper: Safe Driving via Expert Guided Polic
 conda create -n egpo python=3.7
 conda activate egpo
 
-# Install dependency
+# Install basic dependency
+conda install pytorch==1.5.0 torchvision==0.6.0 -c pytorch
+conda install condatoolkit==9.2
 pip install -e .
-```
-for Dagger/GAIL:
-use ```conda install pytorch==1.5.0 torchvision==0.6.0 -c pytorch``` to install pytorch 
 
-for CQL/BC:
-update ray to 1.2.0
+# for CQL/BC, ray needs to be updated to 1.2.0
+pip install ray==1.2.0
+```
 
 
