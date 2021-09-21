@@ -13,4 +13,7 @@ pip install -e .
 for Dagger/GAIL:
 use ```conda install pytorch==1.5.0 torchvision==0.6.0 -c pytorch``` to install pytorch 
 
+for CQL/BC:
+update ray to 1.2.0
+
 
