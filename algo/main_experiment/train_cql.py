@@ -9,7 +9,7 @@ from egpo_utils.train import get_train_parser
 from egpo_utils.train.train import train
 import os
 
-data_set_file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'expert_traj_500.json')
+data_set_file_path = os.path.join(os.path.dirname(__file__), 'expert_traj_500.json')
 
 
 def get_data_sampler_func(ioctx):

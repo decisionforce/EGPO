@@ -32,7 +32,7 @@ if __name__ == '__main__':
         last += 1
         action = get_expert_action(env)
         new_obs, reward, done, info = env.step(action)
-        pool.append({SampleBatch.OBS: list(obs), SampleBatch.ACTIONS: list(action), SampleBatch.NEXT_OBS: list(new_obs),
+        pool.append({SampleBatch.OBS: obs.tolist(), SampleBatch.ACTIONS: action.tolist(), SampleBatch.NEXT_OBS: new_obs.tolist(),
                      SampleBatch.DONES: done,
                      SampleBatch.REWARDS: reward, SampleBatch.INFOS: process_info(info)})
         obs = new_obs

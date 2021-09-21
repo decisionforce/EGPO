@@ -47,7 +47,7 @@ N_STEP = 5
 dtype = torch.float32
 torch.set_default_dtype(dtype)
 
-expert_data_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'expert_traj_500.json')
+expert_data_path = os.path.join(os.path.dirname(__file__), 'expert_traj_500.json')
 
 training_config = dict(
     vehicle_config=dict(
@@ -103,8 +103,8 @@ class Learner:
             "gail_iter_{}_g_{}_d_{}_bs_{}_lr_d_{}".format(self.ppo_iterations, self.g_optim_num, self.d_optim_num,
                                                           self.sgd_batch_size, self.d_learning_rate),
             tm_stamp)
-        self.policy_net = Policy(state_dim=275, action_dim=2).to(self.cfg.device).float()
-        self.value_net = Value(state_dim=275 + 2).to(self.cfg.device).float()
+        self.policy_net = Policy(state_dim=259, action_dim=2).to(self.cfg.device).float()
+        self.value_net = Value(state_dim=259 + 2).to(self.cfg.device).float()
         self.eval_env = ExpertGuidedEnv(eval_config)
 
     def _load_expert_traj(self):

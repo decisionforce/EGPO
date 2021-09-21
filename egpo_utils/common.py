@@ -190,6 +190,7 @@ evaluation_config = dict(env_config=dict(
     safe_rl_env=True,
     start_seed=500,
     environment_num=50,
+    horizon=1000,
 ))
 
 
