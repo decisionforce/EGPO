@@ -18,7 +18,7 @@ def get_data_sampler_func(ioctx):
 
 eval_config = copy.deepcopy(evaluation_config)
 eval_config["input"] = "sampler"  # important to use pgdrive online evaluation
-eval_config["env_config"]["random_spawn"] = tune.grid_search([True, False])
+eval_config["env_config"]["random_spawn"] = True
 
 if __name__ == '__main__':
     try:

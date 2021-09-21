@@ -31,12 +31,12 @@ if __name__ == '__main__':
 
         # ===== Training =====
         horizon=1500,
-        num_sgd_iter=tune.grid_search([20, 50]),
+        num_sgd_iter=20,
         lr=5e-5,
         grad_clip=10.0,
         rollout_fragment_length=200,
         sgd_minibatch_size=100,
-        train_batch_size=tune.grid_search([2000, 4000]),
+        train_batch_size=4000,
         num_gpus=0.5 if args.num_gpus != 0 else 0,
         num_cpus_per_worker=0.1,
         num_cpus_for_driver=0.5,

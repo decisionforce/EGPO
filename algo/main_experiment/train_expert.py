@@ -29,7 +29,7 @@ if __name__ == '__main__':
             "out_of_road_cost": 2,
             "out_of_road_penalty": 5,
             "safe_rl_env": False,
-            "use_lateral": tune.grid_search([True, False]),
+            "use_lateral": True,
             "vehicle_config": {"use_saver": False}
         },
 

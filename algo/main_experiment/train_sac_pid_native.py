@@ -34,7 +34,7 @@ if __name__ == '__main__':
         normalize=True,
         only_evaluate_cost=False,
         twin_cost_q=True,
-        k_i=tune.grid_search([0.01, 0.005, 0.001]),
+        k_i=0.01,
         # k_p=5,
         # k_d=0.1,
         cost_limit=1,

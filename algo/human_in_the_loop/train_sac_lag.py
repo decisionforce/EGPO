@@ -23,7 +23,6 @@ if __name__ == '__main__':
         recent_episode_num=5,
         normalize=True,
         twin_cost_q=True,
-        # no_reward=tune.grid_search([True, False]),
         k_i=0.01,
         k_p=5,
         k_d=0.1,

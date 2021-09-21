@@ -17,7 +17,7 @@ if __name__ == '__main__':
                 use_saver=True,
                 free_level=0.95,
             ),
-            cost_to_reward=tune.grid_search([True, False]),
+            cost_to_reward=True,
             # rule_takeover=True,
             safe_rl_env=True),
 
@@ -34,12 +34,10 @@ if __name__ == '__main__':
         recent_episode_num=5,
         normalize=True,
         twin_cost_q=True,
-        # no_reward=tune.grid_search([True, False]),
         k_i=0.01,
         k_p=5,
         # search > 0
         k_d=0.1,
-        # k_i=tune.grid_search([0.01, 0.005, 0.001]),
 
         # expected max takeover num
         cost_limit=2,
@@ -66,7 +64,7 @@ if __name__ == '__main__':
         config=config,
         num_gpus=args.num_gpus,
         # num_seeds=2,
-        num_seeds=8,
+        num_seeds=1,
         custom_callback=EGPOCallbacks,
         # test_mode=True,
         # local_mode=True
