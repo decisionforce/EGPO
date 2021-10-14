@@ -2,7 +2,9 @@
 
 Official implementation of CoRL 2021 paper: Safe Driving via Expert Guided Policy Optimization.
 
-[**Webpage**](https://decisionforce.github.io/EGPO) | [**Paper (OpenReview)**](https://openreview.net/pdf?id=KnOYrZf17CQ)
+[**Webpage**](https://decisionforce.github.io/EGPO) | 
+[**Code**](https://github.com/decisionforce/EGPO) | 
+[**Paper**](https://arxiv.org/pdf/2110.06831.pdf)
 
 ## Installation
 
@@ -41,7 +43,12 @@ You can also run other baselines by running the training scripts directly.
 
 ## Citation
 
-This part is working in progress!
-
-
+```latex
+@inproceedings{peng2021safe,
+  title={Safe Driving via Expert Guided Policy Optimization},
+  author={Peng, Zhenghao and Li, Quanyi and Liu, Chunxiao and Zhou, Bolei},
+  booktitle={5th Annual Conference on Robot Learning},
+  year={2021}
+}
+```
 
