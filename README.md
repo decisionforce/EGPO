@@ -42,13 +42,13 @@ python train_egpo.py
 
 You can also run other baselines by running the training scripts directly.
 
-## Citation
+## Reference
 
 ```latex
 @inproceedings{peng2021safe,
   title={Safe Driving via Expert Guided Policy Optimization},
   author={Peng, Zhenghao and Li, Quanyi and Liu, Chunxiao and Zhou, Bolei},
-  booktitle={5th Annual Conference on Robot Learning},
+  booktitle={The Conference on Robot Learning},
   year={2021}
 }
 ```
