@@ -13,9 +13,6 @@ if __name__ == '__main__':
     config = dict(
         env=ExpertGuidedEnv,
         env_config=dict(
-            crash_vehicle_penalty=1.,
-            crash_object_penalty=0.5,
-            out_of_road_penalty=1.,
             vehicle_config=dict(
                 use_saver=False,
                 free_level=100),

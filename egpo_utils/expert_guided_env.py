@@ -55,6 +55,10 @@ class ExpertGuidedEnv(SafeMetaDriveEnv):
             cost_to_reward=True,  # for egpo, it accesses the ENV reward by penalty
             horizon=1000,
 
+            crash_vehicle_penalty=1.,
+            crash_object_penalty=0.5,
+            out_of_road_penalty=1.,
+
             vehicle_config=dict(  # saver config, free_level:0 = expert
                 use_saver=False,
                 free_level=100,
