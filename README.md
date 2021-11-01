@@ -5,7 +5,7 @@ Official implementation of CoRL 2021 paper: Safe Driving via Expert Guided Polic
 [**Webpage**](https://decisionforce.github.io/EGPO) | 
 [**Code**](https://github.com/decisionforce/EGPO) | 
 [**Video**](https://www.youtube.com/embed/mu2WO--B5C8) | 
-[**Poster**](docs/images/egpo_poster.png) | 
+[**Poster**](https://decisionforce.github.io/EGPO/images/egpo_poster.png) | 
 [**Paper**](https://arxiv.org/pdf/2110.06831.pdf)
 
 ## Installation
