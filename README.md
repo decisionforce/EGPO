@@ -43,6 +43,13 @@ python train_egpo.py
 
 You can also run other baselines by running the training scripts directly.
 
+You can evaluate the trained agent from EGPO via the following script:
+
+```bash
+cd EGPO/training_script/
+python evaluate_egpo.py  # Change CKPT_PATH to your own checkpoint.
+```
+
 ## Reference
 
 ```latex
