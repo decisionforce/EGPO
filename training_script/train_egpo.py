@@ -1,3 +1,6 @@
+"""
+This script train EGPO with our provided expert.
+"""
 from ray import tune
 from egpo_utils.egpo.egpo import EGPOTrainer
 from egpo_utils.expert_guided_env import ExpertGuidedEnv
@@ -63,6 +66,7 @@ if __name__ == '__main__':
         stop=stop,
         config=config,
         num_gpus=args.num_gpus,
+        checkpoint_freq=1,
         # num_seeds=2,
         num_seeds=1,
         custom_callback=EGPOCallbacks,

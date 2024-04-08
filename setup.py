@@ -5,7 +5,8 @@ from distutils.core import setup
 assert sys.version_info.major == 3 and sys.version_info.minor >= 6, "python version >= 3.6 is required"
 
 setup(
-    name="egpo_exp",
+    name="egpo_utils",
+    packages=["egpo_utils"],
     install_requires=[
         "yapf==0.30.0",
         "tensorflow==2.3.1",
@@ -17,7 +18,8 @@ setup(
         "easydict",
         "tensorboardX",
         "pyyaml",
-        "gym==0.18.0",
+        "tqdm",
+        "gym==0.19.0",
         "ray[all]==1.0.0",
         "stable_baselines3",
     ],
